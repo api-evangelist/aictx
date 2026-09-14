@@ -1,0 +1,119 @@
+generated: '2026-09-14'
+method: searched
+source: https://www.synsense.ai/developercommunity/documentation/
+description: >-
+  First-party SynSense (formerly aiCTX) client libraries. SynSense ships no HTTP client SDK —
+  the company's developer surface is a stack of Python libraries that drive its neuromorphic
+  silicon over USB/FPGA dev kits. Every version and published date below was read from the
+  registry metadata endpoint (https://pypi.org/pypi/<name>/json) on 2026-09-14; the registry's
+  own upload_time_iso_8601 for the current release is the date recorded. No npm, Maven, NuGet,
+  crates.io, RubyGems, Packagist or pkg.go.dev package is published under the SynSense or aiCTX
+  name — the npm registry search for "synsense" returns zero results.
+packages:
+- language: python
+  registry: pypi
+  name: samna
+  url: https://pypi.org/project/samna/
+  source: https://synsense-sys-int.gitlab.io/samna/
+  docs: https://synsense-sys-int.gitlab.io/samna/
+  install: pip install samna
+  official: true
+  version: 0.48.6
+  published: '2026-06-22'
+  note: >-
+    "SynSense Samna Public Package" — the developer interface and runtime for every SynSense
+    device. Python API over a C++ core, with an event-stream filter graph and a JIT compiler for
+    user-defined filters. Registry maintainer email is @synsense.ai, which is the first-party
+    signal. This is the closest thing SynSense has to an API contract, and it is a local
+    device-binding library, not a network interface.
+- language: python
+  registry: pypi
+  name: rockpool
+  url: https://pypi.org/project/rockpool/
+  source: https://github.com/synsense/rockpool
+  docs: https://rockpool.ai
+  install: pip install rockpool
+  official: true
+  version: 3.1.0
+  published: '2026-07-02'
+  note: >-
+    Training, simulation and deployment library for spiking neural networks, with Torch, JAX,
+    Brian2, Numba and NumPy backends and deployment targets for the Xylo family. Registry
+    maintainer email is @synsense.ai. Actively maintained — the current release is ten weeks old
+    at time of profiling.
+- language: python
+  registry: pypi
+  name: sinabs
+  url: https://pypi.org/project/sinabs/
+  source: https://github.com/synsense/sinabs
+  docs: https://sinabs.ai
+  install: pip install sinabs
+  official: true
+  version: 3.1.3
+  published: '2026-02-04'
+  note: >-
+    PyTorch-based library for spiking convolutional networks and for porting CNNs to DYNAP-CNN
+    and Speck silicon. The PyPI author field reads "SynSense (formerly AiCTX)", which is the
+    provider's own published confirmation of this repo's aiCTX -> SynSense identity.
+- language: python
+  registry: pypi
+  name: sinabs-exodus
+  url: https://pypi.org/project/sinabs-exodus/
+  source: https://github.com/synsense/sinabs-exodus
+  install: pip install sinabs-exodus
+  official: true
+  version: 2.0.0
+  published: '2025-04-04'
+  note: Sinabs plugin implementing the EXODUS algorithm for efficient BPTT training of SNNs.
+- language: python
+  registry: pypi
+  name: sinabs-dynapcnn
+  url: https://pypi.org/project/sinabs-dynapcnn/
+  source: https://gitlab.com/synsense/sinabs
+  install: pip install sinabs-dynapcnn
+  official: true
+  version: 2.0.0
+  published: '2024-03-14'
+  status: deprecated
+  note: >-
+    The package's own PyPI summary declares it deprecated and merged into sinabs. Recorded for
+    completeness and as a decay signal, not as a current install path.
+- language: python
+  registry: pypi
+  name: xylosim
+  url: https://pypi.org/project/xylosim/
+  source: https://pypi.org/project/xylosim/
+  install: pip install xylosim
+  official: true
+  version: 0.1.3
+  published: '2022-03-23'
+  status: stale
+  note: >-
+    C++-backed simulator for quantized SNN accelerators, published by a @synsense.ai maintainer.
+    Last release 2022-03-23 — four and a half years stale, and the Xylo simulation path has since
+    moved inside Rockpool. An abandonment signal on this package specifically, not on the stack.
+- language: python
+  registry: pypi
+  name: tonic
+  url: https://pypi.org/project/tonic/
+  source: https://github.com/neuromorphs/tonic
+  docs: https://tonic.readthedocs.io
+  install: pip install tonic
+  official: false
+  version: 1.6.0
+  published: '2025-01-25'
+  note: >-
+    Neuromorphic dataset loading and transforms. SynSense links it from its own documentation
+    page as part of the recommended stack, but it is published by "The Neuromorphs of Telluride"
+    under the neuromorphs GitHub org, not by SynSense — official:false for that reason.
+registries_checked:
+- registry: pypi
+  result: 6 first-party packages found
+- registry: npm
+  result: no packages (registry.npmjs.org search for "synsense" returned 0 objects)
+- registry: maven-central
+  result: not checked beyond search — no Java/Kotlin surface is documented anywhere on synsense.ai
+- registry: crates.io
+  result: no first-party crate documented
+- registry: nuget
+  result: no first-party package documented

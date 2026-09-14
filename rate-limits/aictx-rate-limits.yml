@@ -1,0 +1,38 @@
+generated: '2026-09-14'
+method: probed
+source: https://www.synsense.ai/wp-json/wp/v2/products_list
+description: >-
+  SynSense publishes no rate limits for its website content API, and the API returns no rate-limit
+  signalling of any kind. This is an honest zero, established by reading the response headers on a
+  live 200 rather than by failing to find a docs page.
+api: SynSense Website Content API
+limit_count: 0
+documented: false
+headers_returned: []
+headers_note: >-
+  A live GET https://www.synsense.ai/wp-json/wp/v2/products_list?per_page=1 returned 200 with
+  these headers and no others: server, date, content-type, vary, access-control-allow-origin,
+  access-control-allow-methods, x-robots-tag, x-content-type-options,
+  access-control-expose-headers, access-control-allow-headers, x-wp-total, x-wp-totalpages, link,
+  allow, strict-transport-security. No X-RateLimit-*, no RateLimit-*, no Retry-After.
+exhaustion_status: null
+exhaustion_note: >-
+  Not determined. No limit was exercised — deliberately, since probing a limit means generating
+  load against a company whose API this pipeline only reads.
+hard_caps_observed:
+- scope: per-request page size
+  parameter: per_page
+  limit: 100
+  window: null
+  evidence: >-
+    GET /wp/v2/posts?per_page=999 -> 400 rest_invalid_param, details.per_page.code
+    rest_out_of_bounds, "per_page must be between 1 (inclusive) and 100 (inclusive)".
+  note: >-
+    A pagination bound, not a rate limit. Recorded because it is the only enforced quantitative
+    ceiling the API actually states.
+edge:
+  cdn: false
+  server: nginx
+  caching: >-
+    The wp-super-cache namespace is registered on the site, so page caching is in use for HTML;
+    no cache-control or age header was returned on the JSON responses probed.

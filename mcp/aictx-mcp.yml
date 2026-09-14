@@ -1,0 +1,63 @@
+generated: '2026-09-14'
+method: derived
+source: openapi/aictx-website-content-api-openapi.json
+status: candidate
+description: >-
+  SynSense (formerly aiCTX) ships no MCP server. This is a CANDIDATE tool surface derived from the
+  operations of the website content API, recorded so the gap is visible and so anyone wiring an
+  agent to SynSense has a starting shape. No endpoint is asserted, because none exists — a guessed
+  MCP URL that happened to answer would read as a verified agent surface and would be worse than
+  nothing.
+deployment:
+  mode: none
+  auth: none
+  verified: derived
+  note: >-
+    Searched the synsense.ai site, the developer community, the documentation hosts
+    (rockpool.ai, sinabs.ai, synsense-sys-int.gitlab.io/samna), the synsense GitHub org (14 public
+    repos, none MCP-related) and the npm and PyPI registries. No hosted remote MCP endpoint and no
+    stdio MCP package is published under SynSense or aiCTX. /.well-known/ probes on every host
+    returned 404 throughout.
+search_evidence:
+- url: https://github.com/synsense
+  status: 200
+  note: 14 public repos — sinabs, rockpool, sinabs-exodus, tutorial/workshop repos. No MCP server.
+- url: https://registry.npmjs.org/-/v1/search?text=synsense
+  status: 200
+  note: Zero packages.
+- url: https://www.synsense.ai/.well-known/ai-plugin.json
+  status: 404
+candidate_tools:
+- name: list_synsense_products
+  description: List SynSense product entries (silicon and software), with slug, title and link.
+  rest: [listProducts]
+  input_from: The parameters of GET /wp/v2/products_list in the derived OpenAPI.
+- name: get_synsense_product
+  description: Retrieve one SynSense product by id.
+  rest: [getProduct]
+- name: list_synsense_open_roles
+  description: List open roles at SynSense, with their office, country and city taxonomies.
+  rest: [listJobs]
+- name: list_synsense_partners
+  description: List SynSense partner organisations.
+  rest: [listPartners]
+- name: list_synsense_offices
+  description: List SynSense office locations.
+  rest: [listOffices]
+- name: list_synsense_awards
+  description: List SynSense awards and recognition entries.
+  rest: [listAwards]
+- name: list_synsense_news
+  description: List SynSense news posts, filterable by date with after/before.
+  rest: [listPosts]
+- name: search_synsense_site
+  description: Search all public SynSense content and return typed results with links.
+  rest: [listSearchResults]
+- name: describe_synsense_api
+  description: Fetch the route index — every path, method and argument schema the site serves.
+  rest: [getApiIndex]
+candidate_note: >-
+  Derived one-to-one from real operationIds in openapi/aictx-website-content-api-openapi.json.
+  Each candidate tool would inherit its backing operation's parameters verbatim as its
+  inputSchema. Nothing here is published by SynSense and no ToolCrosswalk is written, because a
+  crosswalk binds real tools to real operations and there are no real tools.

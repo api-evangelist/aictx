@@ -1,0 +1,27 @@
+generated: '2026-09-14'
+method: generated
+source: openapi/aictx-website-content-api-openapi.json
+description: >-
+  Packaged Agent Skills for SynSense (formerly aiCTX). Generated from the operations of the
+  derived SynSense Website Content API document, plus the conventions, error and authentication
+  artifacts in this repository. Every operationId referenced below exists in that spec; nothing is
+  invented. SynSense publishes no skills, no AGENTS.md and no agent-facing documentation of its
+  own — searched on the site, the developer community and the GitHub org on 2026-09-14.
+api: SynSense Website Content API
+skills:
+- name: synsense-product-catalog
+  file: aictx-product-catalog.md
+  summary: Read the product catalogue, with categories and datasheet attachments resolved.
+  operations: [listProducts, getProduct, listProductCategories, getProductCategory, listMedia, getMediaItem]
+- name: synsense-company-footprint
+  file: aictx-company-footprint.md
+  summary: Offices, partners, awards, open roles and news as structured data.
+  operations: [listOffices, listCountries, listCities, listPartners, listPartnerCategories, listAwards, listAwardYears, listJobs, getJob, listPosts]
+- name: synsense-discover-the-api
+  file: aictx-discover-the-api.md
+  summary: Use the API's own route index and OPTIONS schemas to verify what it serves.
+  operations: [getApiIndex, listTypes, getType, listTaxonomies, getTaxonomy, listStatuses, listSearchResults]
+scope_note: >-
+  All three skills are read-only. No skill is written for the SynSense silicon: the chips are
+  programmed locally through the samna/rockpool/sinabs Python libraries over a USB/FPGA
+  development kit, which is not an agent-callable surface.

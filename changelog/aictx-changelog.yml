@@ -1,0 +1,77 @@
+generated: '2026-09-14'
+method: searched
+source: https://github.com/synsense/rockpool/blob/develop/CHANGELOG.md
+description: >-
+  SynSense publishes no changelog for its website content API and no company-level API release
+  notes. It does keep one real, dated, Keep-a-Changelog-style file: the Rockpool CHANGELOG, on the
+  repo's default branch (develop) and rendered in the Rockpool docs at
+  https://rockpool.ai/advanced/CHANGELOG.html. That is the provider's only dated release record
+  and is what is captured here. Sinabs and Samna ship no CHANGELOG.md — the raw path 404s on
+  main, develop and master for synsense/sinabs, and Samna is documented only per-version.
+subject: rockpool
+subject_note: >-
+  This changelog covers the Rockpool SDK, NOT the HTTP API described in
+  openapi/aictx-website-content-api-openapi.json. That API has no changelog at all.
+scheme: keep-a-changelog
+versioning: semver
+current_version: 3.1.0
+current_version_source: https://pypi.org/pypi/rockpool/json (published 2026-07-02)
+discrepancy: >-
+  PyPI's current Rockpool release is 3.1.0, published 2026-07-02, but the CHANGELOG's newest
+  titled section is v3.0.5 (2026-04-01) followed by an open [Unreleased] block. The 3.1.0 release
+  was cut without promoting the Unreleased section, so the published changelog understates the
+  shipped version by one minor. Recorded as observed; not corrected here.
+entries:
+- version: Unreleased
+  date: null
+  breaking: false
+  additions:
+  - More detailed description of power measurement in XyloAudio 3.
+  - Missing implementation for the second synapses in XyloAudio 3 front-end.
+  fixes:
+  - Removed the pkg_resources dependency (setuptools >= 82) in favour of packaging.
+  - Updated jax.numpy.clip arguments after a_max/a_min deprecation.
+  - Replaced jax.numpy.fix (deprecated in JAX 0.9.0) with jax.numpy.trunc.
+  note: Content believed to correspond to the 3.1.0 release; see `discrepancy` above.
+- version: v3.0.5
+  date: '2026-04-01'
+  breaking: false
+  highlights:
+  - Minimum Python raised to 3.10 in setup.py.
+  - Fixed the JAX dependency for Xylo (missing JAX broke AFESimExternal).
+  - XyloAudio 2 main-clock changes now also adjust the dependent SPI and SAER clocks.
+- version: v3.0.4
+  date: '2026-02-10'
+  breaking: false
+  highlights:
+  - XyloMonitor for XyloAudio 2 gained an auto_calibrate flag, defaulting to the prior behaviour.
+  - Fixed XyloIMU internal clock constraints when the main clock frequency changes.
+- version: v3.0.3
+  date: '2025-12-17'
+  breaking: false
+  highlights:
+  - Fixed timestep counting in XyloAudio 2 real-time mode.
+  - Documentation: type hints propagated into parameter descriptions; BibTeX references for SynSense hardware.
+- version: v3.0.2
+  date: '2025-11-04'
+  breaking: false
+  highlights:
+  - Fixed NaN power measurements when XyloMonitor/XyloSamna were initialised in a loop.
+- version: v3.0.1
+  date: '2025-10-09'
+  breaking: false
+  highlights:
+  - Compatibility with Python 3.12 and NumPy >= 2.0.
+- version: v3.0.0.1
+  date: '2025-07-02'
+  breaking: false
+  highlights:
+  - Hotfix on the 3.0 line.
+- version: v3.0.0
+  date: '2025-06-17'
+  breaking: true
+  highlights:
+  - Major release; the 3.x line.
+window: >-
+  Eight most recent sections of a file that reaches back to v2.8 (2024-06-24) and earlier. Release
+  cadence over the captured window is roughly one release every six to ten weeks.

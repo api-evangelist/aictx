@@ -1,0 +1,77 @@
+generated: '2026-09-14'
+method: probed
+source: https://www.synsense.ai/wp-json/
+description: >-
+  Authentication profile for the SynSense Website Content API. Read from the `authentication`
+  block of the live route index and confirmed by probing the surface anonymously on 2026-09-14.
+  The derived OpenAPI declares no securitySchemes because the described surface genuinely needs
+  none: every content collection returns 200 to an unauthenticated GET.
+api: SynSense Website Content API
+base_url: https://www.synsense.ai/wp-json
+anonymous_read: true
+anonymous_read_evidence: >-
+  GET /wp/v2/products_list, /careers_list, /our_partners, /awards, /office, /posts, /pages,
+  /media, /categories, /tags, /types, /taxonomies, /statuses, /search and /users each returned
+  HTTP 200 with a JSON array and an X-WP-Total header, with no credentials of any kind.
+schemes:
+- id: none
+  type: none
+  applies_to: >-
+    All GET operations in openapi/aictx-website-content-api-openapi.json (40 of 40). The derived
+    document sets `security: []` on every operation to state this explicitly.
+  note: >-
+    WordPress serves the `view` context of public post types to anonymous callers. The `edit`
+    context is refused with 401 rest_forbidden_context.
+- id: application-passwords
+  type: http
+  scheme: basic
+  applies_to: >-
+    The write surface (POST/PUT/PATCH/DELETE) and any `context=edit` read. Not described in the
+    derived OpenAPI, because it was never exercised and no SynSense documentation covers it.
+  authorization_endpoint: https://www.synsense.ai/wp-admin/authorize-application.php
+  source: >-
+    The `authentication` object in the live route index:
+    {"application-passwords":{"endpoints":{"authorization":"https://www.synsense.ai/wp-admin/authorize-application.php"}}}
+  note: >-
+    WordPress application passwords are sent as HTTP Basic (username + generated password). This
+    is site-administrator credentialing, not a developer program — SynSense issues no API keys and
+    publishes no onboarding path for it.
+- id: cookie-nonce
+  type: apiKey
+  in: header
+  name: X-WP-Nonce
+  applies_to: Browser sessions inside the site's own admin/editor.
+  source: >-
+    Advertised by the live response header
+    `access-control-allow-headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type`.
+observed_refusals:
+- request: GET /wp/v2/products_list?context=edit
+  status: 401
+  code: rest_forbidden_context
+- request: GET /wp/v2/users/me
+  status: 401
+  code: rest_not_logged_in
+- request: GET /wp/v2/settings
+  status: 401
+  code: rest_forbidden
+- request: POST /wp/v2/comments
+  status: 401
+  code: rest_comment_login_required
+cors:
+  access_control_allow_origin: '*'
+  access_control_allow_methods: GET, POST, OPTIONS
+  access_control_expose_headers: X-WP-Total, X-WP-TotalPages, Link
+  note: >-
+    Origin `*` on a read-only public content surface. Browser-callable from anywhere without a
+    proxy.
+oauth: false
+oauth_note: >-
+  No OAuth 2.0 or OpenID Connect surface exists. /.well-known/openid-configuration and
+  /.well-known/oauth-authorization-server both 404 on every host (see well-known/). No scopes/
+  artifact is written for this provider for that reason.
+developer_program:
+  api_keys_issued: false
+  signup_url: https://www.synsense.ai/login/
+  signup_note: >-
+    The synsense.ai login is for the developer community forum and the gated download centre,
+    not for API credentials. SynSense issues no API keys.

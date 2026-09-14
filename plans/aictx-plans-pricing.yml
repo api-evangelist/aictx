@@ -1,0 +1,25 @@
+generated: '2026-09-14'
+method: searched
+source: https://www.synsense.ai/
+description: >-
+  SynSense publishes no pricing of any kind. There is no /pricing page on the site — the page
+  sitemap (https://www.synsense.ai/page-sitemap.xml, HTTP 200) lists 23 English pages and none of
+  them is a pricing, plans or buy page. Hardware (Speck, Xylo, DYNAP-CNN, DVS, Rigi, AEVEON dev
+  kits) is sold through the contact form; the software stack (Samna, Rockpool, Sinabs) is free and
+  open source on PyPI; and the website content API this record describes is anonymous and free.
+plan_count: 0
+pricing_page: null
+model: contact-sales
+free_tier:
+  exists: true
+  detail: >-
+    Not a plan, but a fact worth recording: the SDKs are free to install and the HTTP content API
+    requires no account, no key and no payment.
+enterprise_only: true
+evidence:
+- url: https://www.synsense.ai/page-sitemap.xml
+  status: 200
+  note: Full page inventory; no pricing/plans/buy page present.
+- url: https://www.synsense.ai/contact-2/
+  status: 200
+  note: The contact form is the commercial entry point.

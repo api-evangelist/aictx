@@ -1,0 +1,85 @@
+generated: '2026-09-14'
+method: probed
+source: live HTTP probes, 2026-09-14
+description: >-
+  Probe of the /.well-known/ discovery surface on every host this record knows: the registrable
+  domain and www (synsense.ai / www.synsense.ai), the API baseURL host (www.synsense.ai, which is
+  the same host), the legacy aiCTX domain that still resolves (ai-ctx.com), and the two
+  first-party documentation hosts linked from the developer community page (rockpool.ai,
+  sinabs.ai). Nothing was found: every named path 404s on every host, so NO WellKnown or
+  SecurityTxt pointer is wired into apis.yml. Note the apex synsense.ai answers HTTP 200 with the
+  WordPress HTML shell for arbitrary paths (/openapi.json, /llms.txt) while www.synsense.ai
+  correctly 404s them — a soft-404 that must not be read as a document. The /.well-known/ prefix
+  itself is served by nginx and returns a real 404 on both.
+hosts:
+- host: https://www.synsense.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://synsense.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://ai-ctx.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://rockpool.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: https://sinabs.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+notes:
+- >-
+  ai-ctx.com is the original aiCTX domain and still resolves and serves a live SynSense site
+  (HTTP 200), which is corroborating evidence for the rename recorded in apis.yml.
+- >-
+  No A2A agent card exists on any host. Nothing was written to a2a/ — an agent card asserts the
+  provider serves it, and this one does not.

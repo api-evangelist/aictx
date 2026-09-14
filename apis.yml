@@ -1,18 +1,92 @@
 aid: aictx
-name: Aictx
-description: 'Aictx is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+name: aiCTX (now SynSense)
+description: >-
+  aiCTX AG — renamed SynSense AG in May 2020 — is a neuromorphic computing company founded in
+  Zurich in 2017 out of the Institute of Neuroinformatics at the University of Zurich and ETH
+  Zurich. It designs ultra-low-power mixed-signal neuromorphic processors and smart sensors for
+  always-on, sub-milliwatt edge inference: the Speck and DYNAP-CNN event-driven vision SoCs, the
+  Xylo family for audio and IMU signal processing, and the DVS, Rigi and AEVEON sensor series.
+  Its developer surface is a stack of open-source Python libraries rather than a product web API —
+  Samna (the device interface and runtime), Rockpool (spiking network training and deployment)
+  and Sinabs (PyTorch spiking CNNs) — backed by a developer community, forum, and firmware and
+  datasheet download hub at synsense.ai. The one HTTP API the company serves publicly is the
+  anonymous, read-only WordPress REST content API behind that corporate site, which exposes its
+  products, partners, offices, awards, open roles and news as machine-readable JSON.
+image: https://www.synsense.ai/wp-content/uploads/2022/03/logo-synsense-blue.svg
 url: https://raw.githubusercontent.com/api-evangelist/aictx/refs/heads/main/apis.yml
+position: Producing
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
+x-former-name: aiCTX AG
+x-current-name: SynSense AG
+x-rename-evidence: https://www.startupticker.ch/en/news/may-2020/aictx-changes-name-to-synsense-and-closes-series-a-round
 specificationVersion: '0.20'
 created: '2026-09-14'
 modified: '2026-09-14'
 tags:
 - Company
-apis: []
+- Neuromorphic Computing
+- Artificial Intelligence
+- Semiconductors
+- Edge Computing
+- Machine Learning
+- Sensors
+- Internet of Things
+- Open Source
+- Content
+apis:
+- aid: aictx:website-content-api
+  name: SynSense Website Content API
+  description: >-
+    The public WordPress REST API served at https://www.synsense.ai/wp-json. Fully anonymous and
+    read-only for the content surface, it exposes SynSense's own custom post types as JSON —
+    products, partner organisations, offices, awards, open roles and news — alongside the core
+    WordPress content, taxonomy and discovery routes. This is the only HTTP API the company
+    publishes; the neuromorphic hardware is programmed through the Samna/Rockpool/Sinabs Python
+    libraries, not over the network.
+  humanURL: https://www.synsense.ai/
+  baseURL: https://www.synsense.ai/wp-json
+  tags:
+  - Content
+  - Products
+  - Careers
+  - Partners
+  - Discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/aictx-website-content-api-openapi.json
+  - type: Documentation
+    url: https://developer.wordpress.org/rest-api/
+  - type: Examples
+    url: examples/aictx-products-list.json
+  - type: Examples
+    url: examples/aictx-careers-list.json
+  - type: Examples
+    url: examples/aictx-our-partners.json
+  - type: Examples
+    url: examples/aictx-offices.json
+  - type: Examples
+    url: examples/aictx-awards.json
+  - type: Examples
+    url: examples/aictx-news-posts.json
+  - type: Examples
+    url: examples/aictx-content-types.json
+  - type: Overlay
+    url: overlays/aictx-website-content-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aictx-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aictx-problem-types.yml
+  - type: Conventions
+    url: conventions/aictx-conventions.yml
+  - type: DataModel
+    url: data-model/aictx-data-model.yml
+  - type: RateLimits
+    url: rate-limits/aictx-rate-limits.yml
+  - type: X-MCPServerCandidate
+    url: mcp/aictx-mcp.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +94,53 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://equityzen.com/company/aictx
+  url: https://www.synsense.ai/
+- type: DeveloperPortal
+  url: https://www.synsense.ai/developercommunity/
+- type: Documentation
+  url: https://www.synsense.ai/developercommunity/documentation/
+- type: APIReference
+  url: https://synsense-sys-int.gitlab.io/samna/
+- type: GettingStarted
+  url: https://www.synsense.ai/speck-quick-start-guide/
+- type: Support
+  url: https://www.synsense.ai/contact-2/
+- type: HelpCenter
+  url: https://www.synsense.ai/developercommunity/
+- type: Blog
+  url: https://www.synsense.ai/news/
+- type: BlogRSS
+  url: https://www.synsense.ai/feed/
+- type: GitHubOrganization
+  url: https://github.com/synsense
+- type: Login
+  url: https://www.synsense.ai/login/
+- type: TermsOfService
+  url: https://www.synsense.ai/terms-of-service/
+- type: PrivacyPolicy
+  url: https://www.synsense.ai/privacy-policy/
+- type: Packages
+  url: packages/aictx-packages.yml
+- type: SDKs
+  url: packages/aictx-packages.yml
+- type: LLMsTxt
+  url: llms/aictx-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Conformance
+  url: conformance/aictx-conformance.yml
+- type: Lifecycle
+  url: lifecycle/aictx-lifecycle.yml
+- type: ChangeLog
+  url: changelog/aictx-changelog.yml
+- type: Plans
+  url: plans/aictx-plans-pricing.yml
+- type: DomainSecurity
+  url: security/aictx-domain-security.yml
+- type: X-WellKnownProbe
+  url: well-known/aictx-well-known.yml
+x-enrichment:
+  date: '2026-09-14'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v3

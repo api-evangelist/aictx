@@ -1,0 +1,111 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Live probes of https://www.synsense.ai/wp-json (2026-09-14), security/aictx-domain-security.yml,
+  well-known/aictx-well-known.yml and openapi/aictx-website-content-api-openapi.json
+description: >-
+  Cross-cutting standards conformance for SynSense (formerly aiCTX). Each entry is asserted only
+  where something was actually observed on the wire or in a fetched document; a false entry means
+  the standard was looked for and is absent, which is data, not a gap in the probe.
+api: SynSense Website Content API
+conformance:
+- id: rfc8288-web-linking
+  name: RFC 8288 Web Linking
+  conforms: true
+  evidence: >-
+    Live response header on GET
+    https://www.synsense.ai/wp-json/wp/v2/products_list?per_page=1 —
+    'link: <https://www.synsense.ai/wp-json/wp/v2/products_list?per_page=1&page=2>; rel="next"'.
+    Pagination is advertised as typed link relations, not only as query params.
+- id: json-schema
+  name: JSON Schema (resource introspection)
+  conforms: true
+  evidence: >-
+    An HTTP OPTIONS request against any collection returns that route's full resource schema
+    (title, type, properties with types, formats and enums) plus per-endpoint argument schemas.
+    Verified for 20 collections; every one returned 200 with a populated `schema` object. The
+    OpenAPI in this repo was derived from those schemas.
+- id: cors
+  name: W3C Cross-Origin Resource Sharing
+  conforms: true
+  evidence: >-
+    access-control-allow-origin '*', access-control-allow-methods 'GET, POST, OPTIONS',
+    access-control-expose-headers 'X-WP-Total, X-WP-TotalPages, Link' on a live 200.
+- id: rfc6797-hsts
+  name: RFC 6797 HTTP Strict Transport Security
+  conforms: true
+  evidence: 'strict-transport-security: max-age=31536000 on www.synsense.ai (TLS 1.3).'
+- id: dmarc
+  name: DMARC
+  conforms: true
+  evidence: 'synsense.ai publishes a DMARC record with policy p=reject (see security/aictx-domain-security.yml).'
+- id: spf
+  name: SPF
+  conforms: true
+  evidence: synsense.ai publishes an SPF record.
+- id: rfc9457-problem-details
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors are returned as application/json with a bespoke WordPress envelope
+    {"code","message","data":{"status"}} — no application/problem+json, no `type` URI. Observed on
+    404 rest_post_invalid_id, 400 rest_invalid_param, 401 rest_forbidden.
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: >-
+    /.well-known/oauth-authorization-server returns 404 on www.synsense.ai, synsense.ai,
+    ai-ctx.com, rockpool.ai and sinabs.ai. The only authentication the API advertises is
+    WordPress application passwords (HTTP Basic) and a cookie nonce.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every host probed.
+- id: rfc9116-security-txt
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every host probed.
+- id: rfc8594-sunset
+  name: RFC 8594 Sunset HTTP Header
+  conforms: false
+  evidence: No Sunset or Deprecation header observed on any live response; no deprecation policy published.
+- id: idempotency-key
+  name: Idempotency-Key header
+  conforms: false
+  evidence: >-
+    Not applicable rather than missing — the public surface is read-only (collections answer
+    `Allow: GET`; anonymous writes are refused 401). See conventions/aictx-conventions.yml, where
+    idempotency.coverage is recorded as `na`.
+- id: rate-limit-headers
+  name: IETF RateLimit header fields
+  conforms: false
+  evidence: No RateLimit-* or X-RateLimit-* header on any observed 200. See rate-limits/aictx-rate-limits.yml.
+- id: dnssec
+  name: DNSSEC
+  conforms: false
+  evidence: No DNSKEY published for synsense.ai (see security/aictx-domain-security.yml).
+- id: caa
+  name: CAA
+  conforms: false
+  evidence: No CAA record published for synsense.ai.
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: >-
+    SynSense publishes no OpenAPI. The document in openapi/ is derived by API Evangelist from the
+    provider's own route index and OPTIONS schemas and is labelled as such
+    (x-generated-by/x-generated-from). It is not a provider-published contract.
+domain_standards:
+  applicable: false
+  detail: >-
+    Reward-only check, deliberately left empty. SynSense's market is neuromorphic silicon and
+    edge AI; the interoperability standards that matter there (chip packaging, sensor interfaces,
+    ONNX/PyTorch model exchange in the SDK layer) are not API-contract standards, and the HTTP
+    surface in scope is a corporate CMS. No domain standard is asserted because none is declared
+    by the contract.
+certifications:
+  published: []
+  detail: >-
+    No trust centre, no SOC 2 / ISO 27001 / PCI / HIPAA / FedRAMP claim, and no compliance page
+    anywhere on synsense.ai. probe-security-programs.py returned vdp=none trust=none. No
+    Compliance or TrustCenter pointer is wired into apis.yml for that reason.

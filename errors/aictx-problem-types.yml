@@ -1,0 +1,93 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  openapi/aictx-website-content-api-openapi.json plus live error responses observed against
+  https://www.synsense.ai/wp-json on 2026-09-14
+api: SynSense Website Content API
+format: bespoke-json
+format_note: >-
+  NOT RFC 9457. The API returns a WordPress error envelope as application/json, never
+  application/problem+json. The envelope is {"code": <string>, "message": <string>,
+  "data": {"status": <int>, "params": {<field>: <message>}, "details": {...}}} — the HTTP status
+  is repeated inside the body, and the machine-readable discriminator is `code`, not a `type` URI.
+envelope:
+  media_type: application/json
+  discriminator: code
+  fields:
+  - name: code
+    description: Machine-readable error code, stable across releases. Use this, not the message.
+  - name: message
+    description: Human-readable, localisable message.
+  - name: data.status
+    description: HTTP status repeated in the body.
+  - name: data.params
+    description: Per-parameter validation messages. Present only on rest_invalid_param.
+  - name: data.details
+    description: >-
+      Per-parameter nested error object with its own code (e.g. rest_out_of_bounds,
+      rest_not_in_enum). The most specific signal available for a validation failure.
+problem_types:
+- code: rest_no_route
+  status: 404
+  title: No route was found matching the URL and request method
+  cause: The path or the method is not registered on this site.
+  remediation: >-
+    GET https://www.synsense.ai/wp-json/ and read `routes` — it is the authoritative list of every
+    path and the methods each accepts.
+  evidence: GET /wp-json/wp/v2/nonexistent -> 404
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid post ID
+  cause: No item of this post type exists with the requested numeric id.
+  remediation: List the collection first and use an id from it; ids are not contiguous.
+  evidence: GET /wp-json/wp/v2/posts/99999999 -> 404
+- code: rest_invalid_param
+  status: 400
+  title: Invalid parameter(s)
+  cause: A query parameter failed validation — out of range, not in the declared enum, wrong type.
+  remediation: >-
+    Read data.details[<param>].code for the specific failure. Observed sub-codes are
+    rest_out_of_bounds (per_page must be between 1 and 100) and rest_not_in_enum (orderby is not
+    one of the declared values). The declared bounds and enums are in the derived OpenAPI.
+  evidence: >-
+    GET /wp-json/wp/v2/posts?per_page=999 -> 400 rest_out_of_bounds;
+    GET /wp-json/wp/v2/posts?orderby=bogus -> 400 rest_not_in_enum
+- code: rest_forbidden_context
+  status: 401
+  title: Not allowed to edit posts in this post type
+  cause: context=edit was requested without credentials.
+  remediation: >-
+    Use the default context=view. The edit context exposes raw/unrendered fields and requires a
+    site editor account; there is no public path to it.
+  evidence: GET /wp-json/wp/v2/products_list?context=edit -> 401
+- code: rest_forbidden
+  status: 401
+  title: Not allowed to do that
+  cause: An administrative route was called anonymously.
+  remediation: Not reachable without site credentials. /wp/v2/settings is administrative, not public content.
+  evidence: GET /wp-json/wp/v2/settings -> 401
+- code: rest_not_logged_in
+  status: 401
+  title: You are not currently logged in
+  cause: /wp/v2/users/me was called with no session.
+  remediation: >-
+    Use GET /wp/v2/users to list public authors. There is no anonymous "me".
+  evidence: GET /wp-json/wp/v2/users/me -> 401
+- code: rest_cannot_view_plugins
+  status: 401
+  title: Not allowed to manage plugins for this site
+  cause: An administrative plugin route was called anonymously.
+  remediation: Administrative surface; out of scope for any public consumer.
+  evidence: GET /wp-json/wp/v2/plugins -> 401
+- code: rest_comment_login_required
+  status: 401
+  title: Must be logged in to comment
+  cause: Anonymous POST to /wp/v2/comments.
+  remediation: >-
+    The site accepts no anonymous writes of any kind. Comments are closed — /wp/v2/comments
+    returns X-WP-Total 0.
+  evidence: POST /wp-json/wp/v2/comments -> 401
+coverage_note: >-
+  Every entry above was observed live, not inferred. The derived OpenAPI wires the 400 and 404
+  responses to a shared Error schema; the 401 family is documented here rather than in the spec
+  because the spec describes only the anonymous read surface.

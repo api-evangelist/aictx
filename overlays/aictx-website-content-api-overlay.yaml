@@ -1,0 +1,61 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the SynSense Website Content API
+  version: 1.0.0
+extends: ../openapi/aictx-website-content-api-openapi.json
+x-generated: '2026-09-14'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pipeline. Captures the enhancements this profile adds on top of the
+  document derived from https://www.synsense.ai/wp-json — provider identity, the rename, the
+  runtime facts observed on the wire, and cross-links to the sibling artifacts in this repo. The
+  base document is never mutated.
+actions:
+- target: $.info
+  description: Attach provider identity and the aiCTX -> SynSense rename to the contract itself.
+  update:
+    x-provider: SynSense AG
+    x-provider-former-name: aiCTX AG
+    x-provider-renamed: '2020-05'
+    x-provider-website: https://www.synsense.ai/
+    x-provider-industry: Neuromorphic computing and edge AI silicon
+    x-apievangelist-profile: https://apis.io/provider/aictx
+- target: $.info
+  description: >-
+    State plainly that the product surface is not this API, so an agent reading only the contract
+    does not conclude SynSense's hardware is network-callable.
+  update:
+    x-product-surface: >-
+      SynSense's neuromorphic processors are programmed through local Python libraries (Samna,
+      Rockpool, Sinabs) over USB/FPGA development kits. There is no network API for the silicon.
+      This contract covers the corporate website's content only.
+- target: $.servers[0]
+  description: Record the observed transport posture of the single server.
+  update:
+    x-tls: TLSv1.3
+    x-hsts-max-age: 31536000
+    x-cors-allow-origin: '*'
+    x-observed: '2026-09-14'
+- target: $.paths[*].get
+  description: >-
+    Mark every described operation as safe and anonymous. The public surface answers `Allow: GET`
+    and refuses anonymous writes with 401.
+  update:
+    x-safe: true
+    x-auth-required: false
+    x-agentic-access:
+      action_class: read
+      consequence: none
+      token: none
+      escalation: none
+- target: $.components.schemas
+  description: Cross-link the derived artifacts that explain this contract at runtime.
+  update:
+    x-apievangelist-artifacts:
+      conventions: conventions/aictx-conventions.yml
+      errors: errors/aictx-problem-types.yml
+      authentication: authentication/aictx-authentication.yml
+      data_model: data-model/aictx-data-model.yml
+      conformance: conformance/aictx-conformance.yml
+      rate_limits: rate-limits/aictx-rate-limits.yml
+      skills: skills/_index.yml

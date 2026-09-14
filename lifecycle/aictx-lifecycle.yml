@@ -1,0 +1,72 @@
+generated: '2026-09-14'
+method: searched
+source: https://www.synsense.ai/
+description: >-
+  Lifecycle posture for SynSense (formerly aiCTX). Searched the site, the developer community, the
+  documentation hosts and the GitHub org for a versioning policy, a deprecation policy, Sunset /
+  Deprecation header usage (RFC 8594), an SLA and a status page. Almost all of it is absent, and
+  the absences are recorded rather than omitted.
+api: SynSense Website Content API
+versioning:
+  policy_published: false
+  scheme: path-namespace
+  current: wp/v2
+  detail: >-
+    The namespace is the version. No policy page states how long a namespace is supported or what
+    constitutes a breaking change.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  detail: >-
+    No deprecation policy, and no Sunset or Deprecation response header was observed on any live
+    call. No operation in the derived OpenAPI is marked deprecated.
+  observed_deprecations:
+  - subject: sinabs-dynapcnn (PyPI)
+    signal: >-
+      The package's own PyPI summary reads "deprecated sinabs plugin ... has been merged into
+      sinabs". Last release 2024-03-14.
+    scope: SDK, not the HTTP API.
+  - subject: xylosim (PyPI)
+    signal: >-
+      No deprecation notice, but the last release is 2022-03-23 and the functionality now lives
+      in Rockpool. A decay signal, recorded as such.
+    scope: SDK, not the HTTP API.
+status_page:
+  published: false
+  detail: >-
+    No status page exists. status.synsense.ai does not resolve (DNS failure), and
+    synsense.statuspage.io redirects to atlassian.com/software/statuspage — the Statuspage
+    marketing site, not a SynSense page. Recorded here so the 200 on that redirect is not
+    mistaken for a hit.
+  evidence:
+  - url: https://status.synsense.ai
+    status: 0
+    note: DNS does not resolve.
+  - url: https://synsense.statuspage.io
+    status: 200
+    note: Redirects to https://www.atlassian.com/software/statuspage — a soft hit, not a status page.
+sla:
+  published: false
+  detail: No SLA, uptime commitment or support-response target is published for the API or the site.
+support:
+  channels:
+  - type: forum
+    url: https://www.synsense.ai/developercommunity/
+    note: SynSense Developer Community forum (wpForo). Reading is public; posting requires registration.
+  - type: contact-form
+    url: https://www.synsense.ai/contact-2/
+  - type: email
+    value: support@synsense.ai
+    source: PyPI author_email on the sinabs package.
+  - type: issues
+    url: https://github.com/SynSense/rockpool/issues
+    source: project_urls "Bug Tracker" on the rockpool PyPI release.
+maturity:
+  company_founded: '2017'
+  renamed: '2020-05'
+  renamed_detail: aiCTX AG became SynSense AG in May 2020, alongside its Series A.
+  api_maturity: >-
+    The HTTP surface is incidental infrastructure (a WordPress site), not a versioned product. The
+    product surface is the Python SDK stack, which is actively released — Rockpool 3.1.0 on
+    2026-07-02, Samna 0.48.6 on 2026-06-22, Sinabs 3.1.3 on 2026-02-04.

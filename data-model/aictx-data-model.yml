@@ -1,0 +1,194 @@
+generated: '2026-09-14'
+method: derived
+source: openapi/aictx-website-content-api-openapi.json
+description: >-
+  Entity-relationship graph of the SynSense Website Content API, derived from the component
+  schemas (which were themselves read from the API's own HTTP OPTIONS JSON Schema) and from the
+  relation fields each resource declares. WordPress models everything as either a post type (a
+  content object with an integer id) or a taxonomy term (a classifier with an integer id, a slug,
+  a parent and a count); the SynSense-specific entities are named below with the business object
+  each one actually holds.
+api: SynSense Website Content API
+id_scheme:
+  type: integer
+  detail: >-
+    Every entity is addressed by a bare auto-increment integer. There are no prefixed or typed
+    ids, so an id is only meaningful together with its collection — 745 is SAMNA as a product and
+    something unrelated as a post. Each resource also carries a human-stable `slug` and a
+    canonical `link` URL, and slug is the safer join key across snapshots.
+entities:
+- name: Product
+  kind: post-type
+  collection: /wp/v2/products_list
+  count_observed: 8
+  holds: >-
+    SynSense product entries. Observed: Rigi Series, AEVEON, DVS Series, Speck, Xylo, Rockpool,
+    Sinabs, SAMNA — i.e. both the silicon and the software are modelled as products.
+  key_fields: [id, slug, title, link, product_category, featured_media, acf]
+- name: ProductCategory
+  kind: taxonomy
+  collection: /wp/v2/product_category
+  key_fields: [id, slug, name, parent, count]
+- name: Partner
+  kind: post-type
+  collection: /wp/v2/our_partners
+  count_observed: 59
+  holds: SynSense partner organisations.
+  key_fields: [id, slug, title, link, partners_category, featured_media, acf]
+- name: PartnerCategory
+  kind: taxonomy
+  collection: /wp/v2/partners_category
+  key_fields: [id, slug, name, parent, count]
+- name: Award
+  kind: post-type
+  collection: /wp/v2/awards
+  count_observed: 48
+  holds: Awards and recognition entries.
+  key_fields: [id, slug, title, link, awards_year, featured_media, acf]
+- name: AwardYear
+  kind: taxonomy
+  collection: /wp/v2/awards_year
+  key_fields: [id, slug, name, count]
+- name: Job
+  kind: post-type
+  collection: /wp/v2/careers_list
+  count_observed: 10
+  holds: >-
+    Open roles. The live snapshot is dominated by electrode, implant, electrophysiology and iBCI
+    platform roles alongside SoC/ASIC mixed-signal design — a hiring signal that SynSense is
+    building a brain-computer-interface line beside the vision and audio silicon.
+  key_fields: [id, slug, title, link, office, country, city, acf]
+- name: Office
+  kind: taxonomy
+  collection: /wp/v2/office
+  count_observed: 6
+  holds: >-
+    Office locations, applied as a classifier to jobs. Observed terms: zurich, nanjing, shanghai,
+    chengdu, beijing, ningbo — one Swiss and five Chinese sites.
+  key_fields: [id, slug, name, parent, count]
+- name: Country
+  kind: taxonomy
+  collection: /wp/v2/country
+  count_observed: 2
+  key_fields: [id, slug, name, count]
+- name: City
+  kind: taxonomy
+  collection: /wp/v2/city
+  count_observed: 5
+  key_fields: [id, slug, name, count]
+- name: Post
+  kind: post-type
+  collection: /wp/v2/posts
+  count_observed: 33
+  holds: SynSense news items.
+  key_fields: [id, slug, title, link, author, categories, tags, featured_media]
+- name: Page
+  kind: post-type
+  collection: /wp/v2/pages
+  count_observed: 21
+  key_fields: [id, slug, title, link, author, parent, menu_order]
+- name: MediaItem
+  kind: post-type
+  collection: /wp/v2/media
+  count_observed: 1222
+  holds: >-
+    Uploaded attachments, including the product datasheets and dev-kit manuals linked from the
+    documentation page. `source_url` is the direct file URL and `mime_type` distinguishes PDFs
+    from images.
+  key_fields: [id, slug, source_url, mime_type, media_type, media_details, post, author]
+- name: Category
+  kind: taxonomy
+  collection: /wp/v2/categories
+  count_observed: 2
+- name: Tag
+  kind: taxonomy
+  collection: /wp/v2/tags
+  count_observed: 11
+- name: User
+  kind: post-type
+  collection: /wp/v2/users
+  count_observed: 6
+  holds: Public authors of site content.
+relationships:
+- from: Product
+  to: ProductCategory
+  type: has_many
+  via: product_category
+  note: Array of term ids.
+- from: Product
+  to: MediaItem
+  type: has_one
+  via: featured_media
+- from: Partner
+  to: PartnerCategory
+  type: has_many
+  via: partners_category
+- from: Partner
+  to: MediaItem
+  type: has_one
+  via: featured_media
+- from: Award
+  to: AwardYear
+  type: has_many
+  via: awards_year
+- from: Award
+  to: MediaItem
+  type: has_one
+  via: featured_media
+- from: Job
+  to: Office
+  type: has_many
+  via: office
+- from: Job
+  to: Country
+  type: has_many
+  via: country
+- from: Job
+  to: City
+  type: has_many
+  via: city
+- from: Post
+  to: User
+  type: belongs_to
+  via: author
+- from: Post
+  to: Category
+  type: has_many
+  via: categories
+- from: Post
+  to: Tag
+  type: has_many
+  via: tags
+- from: Post
+  to: MediaItem
+  type: has_one
+  via: featured_media
+- from: Page
+  to: Page
+  type: belongs_to
+  via: parent
+  note: Self-referential page hierarchy.
+- from: Page
+  to: User
+  type: belongs_to
+  via: author
+- from: MediaItem
+  to: Post
+  type: belongs_to
+  via: post
+  note: The content object the attachment was uploaded to; nullable.
+- from: Category
+  to: Category
+  type: belongs_to
+  via: parent
+  note: Every taxonomy here is hierarchical-capable; parent is 0 when a term is top-level.
+traversal_note: >-
+  Every resource also carries a HAL-style `_links` block naming its relations by URL, and
+  `?_embed` inflates those relations into an `_embedded` object in one round trip. That is the
+  cheapest way to walk this graph; the id fields above are the fallback when a caller needs to
+  join across snapshots.
+acf_note: >-
+  The substantive per-entity content (product copy, office addresses, job descriptions, partner
+  detail) lives in the per-post-type Advanced Custom Fields `acf` object. Its shape is not
+  declared in the route index or in the OPTIONS schema — both type it as a free-form object — so
+  it is deliberately left untyped here rather than guessed at.

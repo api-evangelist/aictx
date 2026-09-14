@@ -1,0 +1,118 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Live responses from https://www.synsense.ai/wp-json (2026-09-14) +
+  openapi/aictx-website-content-api-openapi.json
+api: SynSense Website Content API
+summary: >-
+  Cross-cutting runtime semantics for the one HTTP API SynSense serves. It is a read-only,
+  anonymous, offset-paginated content API. Several dimensions below are `na` rather than `none`
+  because there is no public write surface for them to apply to — the collection endpoints answer
+  `Allow: GET` and every anonymous mutation attempt is refused 401.
+auth_style:
+  style: none
+  detail: Anonymous. No key, token, header or cookie is required for any described operation.
+  see: authentication/aictx-authentication.yml
+pagination:
+  style: page-number-offset
+  params:
+  - name: page
+    default: 1
+    minimum: 1
+  - name: per_page
+    default: 10
+    minimum: 1
+    maximum: 100
+  - name: offset
+    note: Alternative to page; offsets the result set by a number of items.
+  response_fields: []
+  response_headers:
+  - name: X-WP-Total
+    description: Total items in the collection.
+  - name: X-WP-TotalPages
+    description: Total pages at the current per_page.
+  - name: Link
+    description: >-
+      RFC 8288 link header carrying rel="next" and rel="prev". Observed live, e.g.
+      '<https://www.synsense.ai/wp-json/wp/v2/products_list?per_page=1&page=2>; rel="next"'.
+  detail: >-
+    The count lives in headers, not the body — the body is a bare JSON array. A consumer that
+    reads only the body cannot tell how much is left, so an agent must read X-WP-Total.
+  cursor_based: false
+sparse_fields:
+  supported: true
+  param: _fields
+  detail: >-
+    _fields=id,slug,title,link trims the response to the named fields. Used to produce the
+    examples/ captures in this repo. There is no expansion parameter; related objects are
+    referenced by numeric id and by the HAL-style `_links` block.
+embedding:
+  supported: true
+  param: _embed
+  detail: >-
+    _embed inflates the `_links` relations (author, featured media, terms) into an `_embedded`
+    object, saving a round trip per relation.
+metadata:
+  supported: true
+  detail: >-
+    Every post-type resource carries `meta` and an Advanced Custom Fields `acf` object. On this
+    site the ACF payload is where the real SynSense content lives (product copy, office
+    addresses, job descriptions). Its shape is per-post-type and is not declared in the route
+    index — the OPTIONS schema types it as a free-form object.
+request_id_tracing:
+  supported: false
+  detail: No correlation or request-id header is returned. Observed response headers are server, date, content-type, vary, the CORS trio, x-robots-tag, x-content-type-options, the X-WP-* counters, link, allow and strict-transport-security.
+versioning:
+  style: path-namespace
+  current: wp/v2
+  detail: >-
+    The version is a path namespace. The route index lists 16 namespaces on this site, of which
+    wp/v2 is the content surface; the rest are plugin namespaces (wpml, aioseo, gravityforms,
+    cookieyes, leadin, monsterinsights, google-site-kit, wp-super-cache, otgs/installer,
+    oembed/1.0, wp-site-health/v1, wp-block-editor/v1). There is no version header and no
+    deprecation signalling.
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  see: errors/aictx-problem-types.yml
+rate_limit_signalling:
+  headers: []
+  detail: >-
+    None. No X-RateLimit-*, RateLimit-* or Retry-After header is returned on a 200, and no limit
+    is documented anywhere on synsense.ai.
+  see: rate-limits/aictx-rate-limits.yml
+cors:
+  allow_origin: '*'
+  allow_methods: GET, POST, OPTIONS
+  expose_headers: X-WP-Total, X-WP-TotalPages, Link
+  detail: Directly browser-callable from any origin; no proxy needed for the read surface.
+content_negotiation:
+  media_type: application/json; charset=UTF-8
+  detail: >-
+    JSON only. An HTTP OPTIONS request against any collection returns that route's full JSON
+    Schema — this is the API's own introspection mechanism and is what this repo's OpenAPI was
+    derived from.
+idempotency:
+  coverage: na
+  mechanism: none
+  scope: []
+  detail: >-
+    `na`, not `none`. There is no anonymous mutating surface for an idempotency mechanism to
+    cover: the collection endpoints answer `Allow: GET`, and every anonymous write attempt is
+    refused with 401 (POST /wp/v2/comments -> rest_comment_login_required). All 40 described
+    operations are safe GETs and are therefore idempotent by HTTP method. No Idempotency-Key
+    header is accepted or advertised.
+reversibility:
+  grade: na
+  detail: >-
+    `na`. Reversibility describes whether a write can be taken back, and this API exposes no
+    public write. Nothing an anonymous caller can do changes state, so there is no action to
+    reverse and no window to state. If SynSense ever opens the application-password write
+    surface publicly, WordPress's own trash/restore semantics (DELETE moves to trash unless
+    force=true; a trashed item can be restored by setting status) would be the thing to record
+    here — that is a statement about WordPress, not a commitment SynSense has published, so it
+    is not recorded as a reversal path.
+  write_surfaces: []
+dry_run_mode:
+  supported: na
+  detail: No write surface, therefore no rehearsal mode. OPTIONS serves the schema-inspection role instead.
