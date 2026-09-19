@@ -33,7 +33,7 @@ tags:
 - Edge Computing
 - Machine-Learning
 - Sensors
-- Internet of Things
+- IoT
 - Open-Source
 - Content
 tags_raw:
@@ -320,6 +320,8 @@ apis:
   humanURL: https://www.synsense.ai/
   baseURL: https://www.synsense.ai/wp-json
   tags:
+  - Product
+  tags_raw:
   - Products
   properties:
   - type: OpenAPI
