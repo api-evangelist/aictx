@@ -1,0 +1,777 @@
+openapi: 3.2.0
+info:
+  title: SynSense Website Content Company API
+  version: wp/v2
+  summary: Anonymous, read-only content API for synsense.ai — products, partners, offices, awards, open roles and news.
+  description: The public WordPress REST API served by SynSense (formerly aiCTX) at https://www.synsense.ai/wp-json.
+  contact:
+    name: SynSense
+    url: https://www.synsense.ai/contact-2/
+  license:
+    name: Site content is SynSense's; see Terms of Service
+    url: https://www.synsense.ai/terms-of-service/
+servers:
+- url: https://www.synsense.ai/wp-json
+  description: SynSense corporate site, WordPress REST API root
+tags:
+- name: Company
+  description: Offices and their country/city taxonomies.
+paths:
+  /wp/v2/office:
+    get:
+      operationId: listOffices
+      summary: List offices
+      description: SynSense office locations.
+      tags:
+      - Company
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+      - name: hide_empty
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Whether to hide terms not assigned to any posts.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          default: name
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+        description: Sort collection by term attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: parent
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific parent.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: post
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific post.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to terms with one or more specific slugs.
+        style: form
+        explode: false
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of offices. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Office'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/office/{id}:
+    get:
+      operationId: getOffice
+      summary: Retrieve a office
+      description: Retrieve a single office by id.
+      tags:
+      - Company
+      security: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the office.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested office.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Office'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/country:
+    get:
+      operationId: listCountries
+      summary: List countries
+      description: Country taxonomy used by offices.
+      tags:
+      - Company
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+      - name: hide_empty
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Whether to hide terms not assigned to any posts.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          default: name
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+        description: Sort collection by term attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: parent
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific parent.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: post
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific post.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to terms with one or more specific slugs.
+        style: form
+        explode: false
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of countries. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/country/{id}:
+    get:
+      operationId: getCountry
+      summary: Retrieve a country
+      description: Retrieve a single country by id.
+      tags:
+      - Company
+      security: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the country.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested country.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/city:
+    get:
+      operationId: listCities
+      summary: List cities
+      description: City taxonomy used by offices.
+      tags:
+      - Company
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+      - name: hide_empty
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Whether to hide terms not assigned to any posts.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          default: name
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+        description: Sort collection by term attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: parent
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific parent.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: post
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific post.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to terms with one or more specific slugs.
+        style: form
+        explode: false
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of cities. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/City'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/city/{id}:
+    get:
+      operationId: getCity
+      summary: Retrieve a city
+      description: Retrieve a single city by id.
+      tags:
+      - Company
+      security: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the city.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested city.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    City:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the term.
+          type: integer
+        count:
+          description: Number of published posts for the term.
+          type: integer
+        description:
+          description: HTML description of the term.
+          type: string
+        link:
+          description: URL of the term.
+          type: string
+          format: uri
+        name:
+          description: HTML title for the term.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the term unique to its type.
+          type: string
+        taxonomy:
+          description: Type attribution for the term.
+          type: string
+          enum:
+          - city
+        parent:
+          description: The parent term ID.
+          type: integer
+        meta:
+          description: Meta fields.
+          type: object
+          properties: {}
+        acf:
+          description: ACF field data
+          type: object
+          properties: {}
+      required:
+      - name
+    Country:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the term.
+          type: integer
+        count:
+          description: Number of published posts for the term.
+          type: integer
+        description:
+          description: HTML description of the term.
+          type: string
+        link:
+          description: URL of the term.
+          type: string
+          format: uri
+        name:
+          description: HTML title for the term.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the term unique to its type.
+          type: string
+        taxonomy:
+          description: Type attribution for the term.
+          type: string
+          enum:
+          - country
+        parent:
+          description: The parent term ID.
+          type: integer
+        meta:
+          description: Meta fields.
+          type: object
+          properties: {}
+        acf:
+          description: ACF field data
+          type: object
+          properties: {}
+      required:
+      - name
+    Office:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the term.
+          type: integer
+        count:
+          description: Number of published posts for the term.
+          type: integer
+        description:
+          description: HTML description of the term.
+          type: string
+        link:
+          description: URL of the term.
+          type: string
+          format: uri
+        name:
+          description: HTML title for the term.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the term unique to its type.
+          type: string
+        taxonomy:
+          description: Type attribution for the term.
+          type: string
+          enum:
+          - office
+        parent:
+          description: The parent term ID.
+          type: integer
+        meta:
+          description: Meta fields.
+          type: object
+          properties: {}
+        acf:
+          description: ACF field data
+          type: object
+          properties: {}
+      required:
+      - name
+    Error:
+      type: object
+      description: WordPress REST error envelope. Not RFC 9457 problem+json — a bespoke JSON object served as application/json.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, when the failure was a bad query parameter.
+      required:
+      - code
+      - message
+      - data
+  responses:
+    NotFound:
+      description: No resource with that identifier. Body is the WordPress REST error envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid parameter. Body is the WordPress REST error envelope with code rest_invalid_param.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+x-generated-from: https://www.synsense.ai/wp-json/ route index + HTTP OPTIONS JSON Schema per route
+x-generated-on: '2026-09-14'
+x-generated-by: API Evangelist enrichment pipeline (derived, not provider-published)

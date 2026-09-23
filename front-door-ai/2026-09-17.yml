@@ -1,0 +1,27 @@
+# Front Door AI Index — aictx — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: aictx
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.synsense.ai
+  final_host: www.synsense.ai
+  ownership: own
+  owner: aictx
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 5
+  host_score: 5
+  density: 7.06
+  words: 708
+  tiers:
+    agentic: 2
+    core: 3
+    model: 0
+  ambiguous: 9
+  top_terms:
+    intelligence: 9
+    artificial intelligence: 3
+    inference: 2

@@ -1,0 +1,43 @@
+{
+  "provider": "aictx",
+  "sources": [
+    "aictx-awards-api-openapi.yml",
+    "aictx-careers-api-openapi.yml",
+    "aictx-company-api-openapi.yml",
+    "aictx-content-api-openapi.yml",
+    "aictx-discovery-api-openapi.yml",
+    "aictx-news-api-openapi.yml",
+    "aictx-partners-api-openapi.yml",
+    "aictx-products-api-openapi.yml",
+    "aictx-taxonomy-api-openapi.yml"
+  ],
+  "outputs": [
+    "aictx-awards-api-openapi.yml",
+    "aictx-careers-api-openapi.yml",
+    "aictx-company-api-openapi.yml",
+    "aictx-content-api-openapi.yml",
+    "aictx-discovery-api-openapi.yml",
+    "aictx-news-api-openapi.yml",
+    "aictx-partners-api-openapi.yml",
+    "aictx-products-api-openapi.yml",
+    "aictx-taxonomy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [
+    "aictx-awards-api-openapi.yml: previously refined output kept for 4 operation(s) no archived document covers (e.g. /wp/v2/awards get, /wp/v2/awards/{id} get, /wp/v2/awards_year get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-careers-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/careers_list get, /wp/v2/careers_list/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-company-api-openapi.yml: previously refined output kept for 6 operation(s) no archived document covers (e.g. /wp/v2/city get, /wp/v2/city/{id} get, /wp/v2/country get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-content-api-openapi.yml: previously refined output kept for 6 operation(s) no archived document covers (e.g. /wp/v2/media get, /wp/v2/media/{id} get, /wp/v2/pages get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-discovery-api-openapi.yml: previously refined output kept for 8 operation(s) no archived document covers (e.g. / get, /wp/v2/search get, /wp/v2/statuses get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-news-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/posts get, /wp/v2/posts/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-partners-api-openapi.yml: previously refined output kept for 4 operation(s) no archived document covers (e.g. /wp/v2/our_partners get, /wp/v2/our_partners/{id} get, /wp/v2/partners_category get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-products-api-openapi.yml: previously refined output kept for 4 operation(s) no archived document covers (e.g. /wp/v2/product_category get, /wp/v2/product_category/{id} get, /wp/v2/products_list get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aictx-taxonomy-api-openapi.yml: previously refined output kept for 4 operation(s) no archived document covers (e.g. /wp/v2/categories get, /wp/v2/categories/{id} get, /wp/v2/tags get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

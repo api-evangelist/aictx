@@ -1,0 +1,1340 @@
+openapi: 3.2.0
+info:
+  title: SynSense Website Content API
+  version: wp/v2
+  summary: Anonymous, read-only content API for synsense.ai — products, partners, offices, awards, open roles and news.
+  description: The public WordPress REST API served by SynSense (formerly aiCTX) at https://www.synsense.ai/wp-json.
+  contact:
+    name: SynSense
+    url: https://www.synsense.ai/contact-2/
+  license:
+    name: Site content is SynSense's; see Terms of Service
+    url: https://www.synsense.ai/terms-of-service/
+servers:
+- url: https://www.synsense.ai/wp-json
+  description: SynSense corporate site, WordPress REST API root
+tags:
+- name: Content
+  description: Site pages, media attachments and authors.
+paths:
+  /wp/v2/pages:
+    get:
+      operationId: listPages
+      summary: List pages
+      description: Static site pages.
+      tags:
+      - Content
+      security: []
+      parameters:
+      - name: after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published after a given ISO8601 compliant date.
+      - name: author
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to posts assigned to specific authors.
+        style: form
+        explode: false
+      - name: author_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes posts assigned to specific authors.
+        style: form
+        explode: false
+      - name: before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published before a given ISO8601 compliant date.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+      - name: menu_order
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to posts with a specific menu_order value.
+      - name: modified_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified after a given ISO8601 compliant date.
+      - name: modified_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified before a given ISO8601 compliant date.
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: desc
+          enum:
+          - asc
+          - desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          default: date
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          - menu_order
+        description: Sort collection by post attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: parent
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to items with particular parent IDs.
+        style: form
+        explode: false
+      - name: parent_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to all items except those of a particular parent ID.
+        style: form
+        explode: false
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to posts with one or more specific slugs.
+        style: form
+        explode: false
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - acf-disabled
+            - any
+            type: string
+          x-wp-default: publish
+        description: Limit result set to posts assigned one or more statuses.
+        style: form
+        explode: false
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of pages. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/pages/{id}:
+    get:
+      operationId: getPage
+      summary: Retrieve a page
+      description: Retrieve a single page by id.
+      tags:
+      - Content
+      security: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the page.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: password
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The password for the post if it is password protected.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested page.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/media:
+    get:
+      operationId: listMedia
+      summary: List media
+      description: Uploaded media attachments (datasheets, images, PDFs).
+      tags:
+      - Content
+      security: []
+      parameters:
+      - name: after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published after a given ISO8601 compliant date.
+      - name: author
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to posts assigned to specific authors.
+        style: form
+        explode: false
+      - name: author_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes posts assigned to specific authors.
+        style: form
+        explode: false
+      - name: before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published before a given ISO8601 compliant date.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+      - name: media_type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - image
+          - video
+          - text
+          - application
+          - audio
+        description: Limit result set to attachments of a particular media type.
+      - name: mime_type
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit result set to attachments of a particular MIME type.
+      - name: modified_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified after a given ISO8601 compliant date.
+      - name: modified_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified before a given ISO8601 compliant date.
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: desc
+          enum:
+          - asc
+          - desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          default: date
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+        description: Sort collection by post attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: parent
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to items with particular parent IDs.
+        style: form
+        explode: false
+      - name: parent_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to all items except those of a particular parent ID.
+        style: form
+        explode: false
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to posts with one or more specific slugs.
+        style: form
+        explode: false
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            enum:
+            - inherit
+            - private
+            - trash
+            type: string
+          x-wp-default: inherit
+        description: Limit result set to posts assigned one or more statuses.
+        style: form
+        explode: false
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of media. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/media/{id}:
+    get:
+      operationId: getMediaItem
+      summary: Retrieve a mediaitem
+      description: Retrieve a single mediaitem by id.
+      tags:
+      - Content
+      security: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the mediaitem.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested mediaitem.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/users:
+    get:
+      operationId: listUsers
+      summary: List users
+      description: Public authors of site content.
+      tags:
+      - Content
+      security: []
+      parameters:
+      - name: capabilities
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users matching at least one specific capability provided. Accepts csv list or single capability.
+        style: form
+        explode: false
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+      - name: has_published_posts
+        in: query
+        required: false
+        schema:
+          type:
+          - boolean
+          - array
+          items:
+            type: string
+            enum:
+            - post
+            - page
+            - attachment
+            - nav_menu_item
+            - wp_block
+            - wp_template
+            - wp_template_part
+            - wp_navigation
+            - our_partners
+            - awards
+            - products_list
+            - careers_list
+            - epkb_post_type_1
+        description: Limit result set to users who have published posts.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          default: asc
+          enum:
+          - asc
+          - desc
+          type: string
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          default: name
+          enum:
+          - id
+          - include
+          - name
+          - registered_date
+          - slug
+          - include_slugs
+          - email
+          - url
+          type: string
+        description: Sort collection by user attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: roles
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users matching at least one specific role provided. Accepts csv list or single role.
+        style: form
+        explode: false
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users with one or more specific slugs.
+        style: form
+        explode: false
+      - name: who
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - authors
+        description: Limit result set to users who are considered authors.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of users. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/users/{id}:
+    get:
+      operationId: getUser
+      summary: Retrieve a user
+      description: Retrieve a single user by id.
+      tags:
+      - Content
+      security: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the user.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Page:
+      type: object
+      properties:
+        date:
+          description: The date the post was published, in the site's timezone.
+          type:
+          - string
+          - 'null'
+          format: date-time
+        date_gmt:
+          description: The date the post was published, as GMT.
+          type:
+          - string
+          - 'null'
+          format: date-time
+        guid:
+          description: The globally unique identifier for the post.
+          type: object
+          properties:
+            raw:
+              description: GUID for the post, as it exists in the database.
+              type: string
+            rendered:
+              description: GUID for the post, transformed for display.
+              type: string
+        id:
+          description: Unique identifier for the post.
+          type: integer
+        link:
+          description: URL to the post.
+          type: string
+          format: uri
+        modified:
+          description: The date the post was last modified, in the site's timezone.
+          type: string
+          format: date-time
+        modified_gmt:
+          description: The date the post was last modified, as GMT.
+          type: string
+          format: date-time
+        slug:
+          description: An alphanumeric identifier for the post unique to its type.
+          type: string
+        status:
+          description: A named status for the post.
+          type: string
+          enum:
+          - publish
+          - future
+          - draft
+          - pending
+          - private
+          - acf-disabled
+        type:
+          description: Type of post.
+          type: string
+        password:
+          description: A password to protect access to the content and excerpt.
+          type: string
+        permalink_template:
+          description: Permalink template for the post.
+          type: string
+        generated_slug:
+          description: Slug automatically generated from the post title.
+          type: string
+        parent:
+          description: The ID for the parent of the post.
+          type: integer
+        title:
+          description: The title for the post.
+          type: object
+          properties:
+            raw:
+              description: Title for the post, as it exists in the database.
+              type: string
+            rendered:
+              description: HTML title for the post, transformed for display.
+              type: string
+        content:
+          description: The content for the post.
+          type: object
+          properties:
+            raw:
+              description: Content for the post, as it exists in the database.
+              type: string
+            rendered:
+              description: HTML content for the post, transformed for display.
+              type: string
+            block_version:
+              description: Version of the content block format used by the post.
+              type: integer
+            protected:
+              description: Whether the content is protected with a password.
+              type: boolean
+        author:
+          description: The ID for the author of the post.
+          type: integer
+        excerpt:
+          description: The excerpt for the post.
+          type: object
+          properties:
+            raw:
+              description: Excerpt for the post, as it exists in the database.
+              type: string
+            rendered:
+              description: HTML excerpt for the post, transformed for display.
+              type: string
+            protected:
+              description: Whether the excerpt is protected with a password.
+              type: boolean
+        featured_media:
+          description: The ID of the featured media for the post.
+          type: integer
+        comment_status:
+          description: Whether or not comments are open on the post.
+          type: string
+          enum:
+          - open
+          - closed
+        ping_status:
+          description: Whether or not the post can be pinged.
+          type: string
+          enum:
+          - open
+          - closed
+        menu_order:
+          description: The order of the post in relation to other posts.
+          type: integer
+        meta:
+          description: Meta fields.
+          type: object
+          properties:
+            content-type:
+              type: string
+              description: ''
+              default: ''
+            _mi_skip_tracking:
+              type: boolean
+              description: ''
+              default: false
+        template:
+          description: The theme file to use to display the post.
+          type: string
+        acf:
+          description: ACF field data
+          type: object
+          properties: {}
+      links:
+      - rel: https://api.w.org/action-publish
+        title: The current user can publish this post.
+        href: https://www.synsense.ai/wp-json/wp/v2/pages/{id}
+        targetSchema:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+              - publish
+              - future
+      - rel: https://api.w.org/action-unfiltered-html
+        title: The current user can post unfiltered HTML markup and JavaScript.
+        href: https://www.synsense.ai/wp-json/wp/v2/pages/{id}
+        targetSchema:
+          type: object
+          properties:
+            content:
+              raw:
+                type: string
+      - rel: https://api.w.org/action-assign-author
+        title: The current user can change the author on this post.
+        href: https://www.synsense.ai/wp-json/wp/v2/pages/{id}
+        targetSchema:
+          type: object
+          properties:
+            author:
+              type: integer
+    User:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the user.
+          type: integer
+        username:
+          description: Login name for the user.
+          type: string
+        name:
+          description: Display name for the user.
+          type: string
+        first_name:
+          description: First name for the user.
+          type: string
+        last_name:
+          description: Last name for the user.
+          type: string
+        email:
+          description: The email address for the user.
+          type: string
+          format: email
+        url:
+          description: URL of the user.
+          type: string
+          format: uri
+        description:
+          description: Description of the user.
+          type: string
+        link:
+          description: Author URL of the user.
+          type: string
+          format: uri
+        locale:
+          description: Locale for the user.
+          type: string
+          enum:
+          - ''
+          - en_US
+          - zh_CN
+          - zh_HK
+          - zh_TW
+        nickname:
+          description: The nickname for the user.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the user.
+          type: string
+        registered_date:
+          description: Registration date for the user.
+          type: string
+          format: date-time
+        roles:
+          description: Roles assigned to the user.
+          type: array
+          items:
+            type: string
+        password:
+          description: Password for the user (never included).
+          type: string
+        capabilities:
+          description: All capabilities assigned to the user.
+          type: object
+        extra_capabilities:
+          description: Any extra capabilities assigned to the user.
+          type: object
+        avatar_urls:
+          description: Avatar URLs for the user.
+          type: object
+          properties:
+            '24':
+              description: Avatar URL with image size of 24 pixels.
+              type: string
+              format: uri
+            '48':
+              description: Avatar URL with image size of 48 pixels.
+              type: string
+              format: uri
+            '96':
+              description: Avatar URL with image size of 96 pixels.
+              type: string
+              format: uri
+        meta:
+          description: Meta fields.
+          type: object
+          properties:
+            persisted_preferences:
+              type: object
+              description: ''
+              properties:
+                _modified:
+                  description: The date and time the preferences were updated.
+                  type: string
+                  format: date-time
+              additionalProperties: true
+        acf:
+          description: ACF field data
+          type: object
+          properties: {}
+      required:
+      - email
+      - password
+      - username
+    Error:
+      type: object
+      description: WordPress REST error envelope. Not RFC 9457 problem+json — a bespoke JSON object served as application/json.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, when the failure was a bad query parameter.
+      required:
+      - code
+      - message
+      - data
+    MediaItem:
+      type: object
+      properties:
+        date:
+          description: The date the post was published, in the site's timezone.
+          type:
+          - string
+          - 'null'
+          format: date-time
+        date_gmt:
+          description: The date the post was published, as GMT.
+          type:
+          - string
+          - 'null'
+          format: date-time
+        guid:
+          description: The globally unique identifier for the post.
+          type: object
+          properties:
+            raw:
+              description: GUID for the post, as it exists in the database.
+              type: string
+            rendered:
+              description: GUID for the post, transformed for display.
+              type: string
+        id:
+          description: Unique identifier for the post.
+          type: integer
+        link:
+          description: URL to the post.
+          type: string
+          format: uri
+        modified:
+          description: The date the post was last modified, in the site's timezone.
+          type: string
+          format: date-time
+        modified_gmt:
+          description: The date the post was last modified, as GMT.
+          type: string
+          format: date-time
+        slug:
+          description: An alphanumeric identifier for the post unique to its type.
+          type: string
+        status:
+          description: A named status for the post.
+          type: string
+          enum:
+          - publish
+          - future
+          - draft
+          - pending
+          - private
+          - acf-disabled
+        type:
+          description: Type of post.
+          type: string
+        permalink_template:
+          description: Permalink template for the post.
+          type: string
+        generated_slug:
+          description: Slug automatically generated from the post title.
+          type: string
+        title:
+          description: The title for the post.
+          type: object
+          properties:
+            raw:
+              description: Title for the post, as it exists in the database.
+              type: string
+            rendered:
+              description: HTML title for the post, transformed for display.
+              type: string
+        author:
+          description: The ID for the author of the post.
+          type: integer
+        comment_status:
+          description: Whether or not comments are open on the post.
+          type: string
+          enum:
+          - open
+          - closed
+        ping_status:
+          description: Whether or not the post can be pinged.
+          type: string
+          enum:
+          - open
+          - closed
+        meta:
+          description: Meta fields.
+          type: object
+          properties:
+            content-type:
+              type: string
+              description: ''
+              default: ''
+            _mi_skip_tracking:
+              type: boolean
+              description: ''
+              default: false
+        template:
+          description: The theme file to use to display the post.
+          type: string
+        acf:
+          description: ACF field data
+          type: object
+          properties: {}
+        alt_text:
+          description: Alternative text to display when attachment is not displayed.
+          type: string
+        caption:
+          description: The attachment caption.
+          type: object
+          properties:
+            raw:
+              description: Caption for the attachment, as it exists in the database.
+              type: string
+            rendered:
+              description: HTML caption for the attachment, transformed for display.
+              type: string
+        description:
+          description: The attachment description.
+          type: object
+          properties:
+            raw:
+              description: Description for the attachment, as it exists in the database.
+              type: string
+            rendered:
+              description: HTML description for the attachment, transformed for display.
+              type: string
+        media_type:
+          description: Attachment type.
+          type: string
+          enum:
+          - image
+          - file
+        mime_type:
+          description: The attachment MIME type.
+          type: string
+        media_details:
+          description: Details about the media file, specific to its type.
+          type: object
+        post:
+          description: The ID for the associated post of the attachment.
+          type: integer
+        source_url:
+          description: URL to the original attachment file.
+          type: string
+          format: uri
+        missing_image_sizes:
+          description: List of the missing image sizes of the attachment.
+          type: array
+          items:
+            type: string
+      links:
+      - rel: https://api.w.org/action-unfiltered-html
+        title: The current user can post unfiltered HTML markup and JavaScript.
+        href: https://www.synsense.ai/wp-json/wp/v2/media/{id}
+        targetSchema:
+          type: object
+          properties:
+            content:
+              raw:
+                type: string
+      - rel: https://api.w.org/action-assign-author
+        title: The current user can change the author on this post.
+        href: https://www.synsense.ai/wp-json/wp/v2/media/{id}
+        targetSchema:
+          type: object
+          properties:
+            author:
+              type: integer
+  responses:
+    NotFound:
+      description: No resource with that identifier. Body is the WordPress REST error envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid parameter. Body is the WordPress REST error envelope with code rest_invalid_param.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+x-generated-from: https://www.synsense.ai/wp-json/ route index + HTTP OPTIONS JSON Schema per route
+x-generated-on: '2026-09-14'
+x-generated-by: API Evangelist enrichment pipeline (derived, not provider-published)

@@ -1,4 +1,4 @@
-# Aictx
+# aiCTX (now SynSense)
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,5 +64,33 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Aictx is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://equityzen.com/company/aictx
+**aiCTX AG was renamed SynSense AG in May 2020.** This repository is filed under the original
+`aictx` slug; the company, its site and its software all trade as SynSense today.
+
+SynSense is a neuromorphic computing company founded in Zurich in 2017 out of the Institute of
+Neuroinformatics at the University of Zurich and ETH Zurich. It designs ultra-low-power
+mixed-signal neuromorphic processors and smart sensors for always-on, sub-milliwatt edge
+inference — Speck and DYNAP-CNN (event-driven vision), the Xylo family (audio and IMU), and the
+DVS, Rigi and AEVEON sensor series.
+
+## What this profile found
+
+- **The silicon is not network-callable.** SynSense's developer surface is a stack of open-source
+  Python libraries that drive its chips locally over USB/FPGA development kits: `samna` (device
+  interface and runtime), `rockpool` (SNN training and deployment) and `sinabs` (PyTorch spiking
+  CNNs). All are published on PyPI and actively released; see `packages/`.
+- **One HTTP API is served publicly** — the WordPress REST content API at
+  `https://www.synsense.ai/wp-json`. It is anonymous, read-only and CORS-open, and its custom post
+  types carry real company data: products, partner organisations, offices, awards, open roles and
+  news. `openapi/aictx-website-content-api-openapi.json` is a 40-operation OpenAPI 3.1 document
+  **derived** by API Evangelist from surfaces the site itself serves — the route index at
+  `/wp-json/` and the JSON Schema each collection returns to an HTTP `OPTIONS` request. SynSense
+  publishes no OpenAPI of its own, and the derived document says so in its `info.description`,
+  `x-generated-from` and `x-generated-by`.
+- **Absences were probed, not assumed.** No MCP server, no A2A agent card, no `/.well-known/`
+  documents on any host, no `llms.txt`, no status page, no pricing page, no security.txt, no
+  OAuth/OIDC discovery, no trust centre or published certifications, and no rate-limit
+  signalling. Each is recorded with the URL probed and the status it returned.
+
+Website: https://www.synsense.ai/ · Developer community: https://www.synsense.ai/developercommunity/ ·
+GitHub: https://github.com/synsense

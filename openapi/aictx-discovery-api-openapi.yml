@@ -1,0 +1,754 @@
+openapi: 3.2.0
+info:
+  title: SynSense Website Content Discovery API
+  version: wp/v2
+  summary: Anonymous, read-only content API for synsense.ai — products, partners, offices, awards, open roles and news.
+  description: The public WordPress REST API served by SynSense (formerly aiCTX) at https://www.synsense.ai/wp-json.
+  contact:
+    name: SynSense
+    url: https://www.synsense.ai/contact-2/
+  license:
+    name: Site content is SynSense's; see Terms of Service
+    url: https://www.synsense.ai/terms-of-service/
+servers:
+- url: https://www.synsense.ai/wp-json
+  description: SynSense corporate site, WordPress REST API root
+tags:
+- name: Discovery
+  description: Self-describing index, content types, taxonomies, statuses and site search.
+paths:
+  /wp/v2/types:
+    get:
+      operationId: listTypes
+      summary: List types
+      description: Registered content types.
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of types. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Type'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/types/{type}:
+    get:
+      operationId: getType
+      summary: Retrieve a type
+      description: Retrieve a single type by type.
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: type
+        in: path
+        required: true
+        description: Unique identifier for the type.
+        schema:
+          type: string
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Type'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/taxonomies:
+    get:
+      operationId: listTaxonomies
+      summary: List taxonomies
+      description: Registered taxonomies.
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: type
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to taxonomies associated with a specific post type.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of taxonomies. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taxonomy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/taxonomies/{taxonomy}:
+    get:
+      operationId: getTaxonomy
+      summary: Retrieve a taxonomy
+      description: Retrieve a single taxonomy by taxonomy.
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        description: Unique identifier for the taxonomy.
+        schema:
+          type: string
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested taxonomy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taxonomy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/statuses:
+    get:
+      operationId: listStatuses
+      summary: List statuses
+      description: Registered post statuses.
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of statuses. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/statuses/{status}:
+    get:
+      operationId: getStatus
+      summary: Retrieve a status
+      description: Retrieve a single status by status.
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: status
+        in: path
+        required: true
+        description: Unique identifier for the status.
+        schema:
+          type: string
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: The requested status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/search:
+    get:
+      operationId: listSearchResults
+      summary: List searchresults
+      description: Site-wide search across public content.
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+        style: form
+        explode: false
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+        style: form
+        explode: false
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: subtype
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            enum:
+            - post
+            - page
+            - our_partners
+            - awards
+            - products_list
+            - careers_list
+            - epkb_post_type_1
+            - category
+            - post_tag
+            - partners_category
+            - awards_year
+            - product_category
+            - country
+            - city
+            - office
+            - epkb_post_type_1_category
+            - epkb_post_type_1_tag
+            - any
+            type: string
+          x-wp-default: any
+        description: Limit results to items of one or more object subtypes.
+        style: form
+        explode: false
+      - name: type
+        in: query
+        required: false
+        schema:
+          default: post
+          type: string
+          enum:
+          - post
+          - term
+          - post-format
+        description: Limit results to items of an object type.
+      - name: wpml_language
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - zh-hans
+          - en
+        description: WPML's language code
+      responses:
+        '200':
+          description: A page of searchresults. Total item and page counts are returned in the X-WP-Total and X-WP-TotalPages response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next, rel=prev).
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /:
+    get:
+      operationId: getApiIndex
+      summary: Retrieve the API route index
+      description: 'Self-describing discovery document: site name, description, registered namespaces, every route with its methods and argument schemas, and the supported authentication mechanisms.'
+      tags:
+      - Discovery
+      security: []
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: namespace
+        in: query
+        required: false
+        description: Limit the index to a single namespace, e.g. wp/v2.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The route index.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiIndex'
+components:
+  schemas:
+    Taxonomy:
+      type: object
+      properties:
+        capabilities:
+          description: All capabilities used by the taxonomy.
+          type: object
+        description:
+          description: A human-readable description of the taxonomy.
+          type: string
+        hierarchical:
+          description: Whether or not the taxonomy should have children.
+          type: boolean
+        labels:
+          description: Human-readable labels for the taxonomy for various contexts.
+          type: object
+        name:
+          description: The title for the taxonomy.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the taxonomy.
+          type: string
+        show_cloud:
+          description: Whether or not the term cloud should be displayed.
+          type: boolean
+        types:
+          description: Types associated with the taxonomy.
+          type: array
+          items:
+            type: string
+        rest_base:
+          description: REST base route for the taxonomy.
+          type: string
+        rest_namespace:
+          description: REST namespace route for the taxonomy.
+          type: string
+        visibility:
+          description: The visibility settings for the taxonomy.
+          type: object
+          properties:
+            public:
+              description: Whether a taxonomy is intended for use publicly either via the admin interface or by front-end users.
+              type: boolean
+            publicly_queryable:
+              description: Whether the taxonomy is publicly queryable.
+              type: boolean
+            show_ui:
+              description: Whether to generate a default UI for managing this taxonomy.
+              type: boolean
+            show_admin_column:
+              description: Whether to allow automatic creation of taxonomy columns on associated post-types table.
+              type: boolean
+            show_in_nav_menus:
+              description: Whether to make the taxonomy available for selection in navigation menus.
+              type: boolean
+            show_in_quick_edit:
+              description: Whether to show the taxonomy in the quick/bulk edit panel.
+              type: boolean
+    SearchResult:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the object.
+          type:
+          - integer
+          - string
+        title:
+          description: The title for the object.
+          type: string
+        url:
+          description: URL to the object.
+          type: string
+          format: uri
+        type:
+          description: Object type.
+          type: string
+          enum:
+          - post
+          - term
+          - post-format
+        subtype:
+          description: Object subtype.
+          type: string
+          enum:
+          - post
+          - page
+          - our_partners
+          - awards
+          - products_list
+          - careers_list
+          - epkb_post_type_1
+          - category
+          - post_tag
+          - partners_category
+          - awards_year
+          - product_category
+          - country
+          - city
+          - office
+          - epkb_post_type_1_category
+          - epkb_post_type_1_tag
+    Error:
+      type: object
+      description: WordPress REST error envelope. Not RFC 9457 problem+json — a bespoke JSON object served as application/json.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, when the failure was a bad query parameter.
+      required:
+      - code
+      - message
+      - data
+    Status:
+      type: object
+      properties:
+        name:
+          description: The title for the status.
+          type: string
+        private:
+          description: Whether posts with this status should be private.
+          type: boolean
+        protected:
+          description: Whether posts with this status should be protected.
+          type: boolean
+        public:
+          description: Whether posts of this status should be shown in the front end of the site.
+          type: boolean
+        queryable:
+          description: Whether posts with this status should be publicly-queryable.
+          type: boolean
+        show_in_list:
+          description: Whether to include posts in the edit listing for their post type.
+          type: boolean
+        slug:
+          description: An alphanumeric identifier for the status.
+          type: string
+        date_floating:
+          description: Whether posts of this status may have floating published dates.
+          type: boolean
+    ApiIndex:
+      type: object
+      description: WordPress REST API root discovery document.
+      properties:
+        name:
+          type: string
+          description: Site title.
+        description:
+          type: string
+          description: Site tagline.
+        url:
+          type: string
+          format: uri
+        home:
+          type: string
+          format: uri
+        gmt_offset:
+          type:
+          - string
+          - number
+        timezone_string:
+          type: string
+        namespaces:
+          type: array
+          items:
+            type: string
+        authentication:
+          type: object
+          description: Supported authentication mechanisms and their endpoints.
+        routes:
+          type: object
+          description: Every registered route, keyed by path, with methods, endpoints and argument schemas.
+        site_icon_url:
+          type: string
+          format: uri
+    Type:
+      type: object
+      properties:
+        capabilities:
+          description: All capabilities used by the post type.
+          type: object
+        description:
+          description: A human-readable description of the post type.
+          type: string
+        hierarchical:
+          description: Whether or not the post type should have children.
+          type: boolean
+        viewable:
+          description: Whether or not the post type can be viewed.
+          type: boolean
+        labels:
+          description: Human-readable labels for the post type for various contexts.
+          type: object
+        name:
+          description: The title for the post type.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the post type.
+          type: string
+        supports:
+          description: All features, supported by the post type.
+          type: object
+        has_archive:
+          description: If the value is a string, the value will be used as the archive slug. If the value is false the post type has no archive.
+          type:
+          - string
+          - boolean
+        taxonomies:
+          description: Taxonomies associated with post type.
+          type: array
+          items:
+            type: string
+        rest_base:
+          description: REST base route for the post type.
+          type: string
+        rest_namespace:
+          description: REST route's namespace for the post type.
+          type: string
+        visibility:
+          description: The visibility settings for the post type.
+          type: object
+          properties:
+            show_ui:
+              description: Whether to generate a default UI for managing this post type.
+              type: boolean
+            show_in_nav_menus:
+              description: Whether to make the post type available for selection in navigation menus.
+              type: boolean
+        icon:
+          description: The icon for the post type.
+          type:
+          - string
+          - 'null'
+  responses:
+    NotFound:
+      description: No resource with that identifier. Body is the WordPress REST error envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid parameter. Body is the WordPress REST error envelope with code rest_invalid_param.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+x-generated-from: https://www.synsense.ai/wp-json/ route index + HTTP OPTIONS JSON Schema per route
+x-generated-on: '2026-09-14'
+x-generated-by: API Evangelist enrichment pipeline (derived, not provider-published)
