@@ -31,11 +31,10 @@ tags:
 - Artificial Intelligence
 - Semiconductors
 - Edge Computing
-- Machine-Learning
+- Machine Learning
 - Sensors
 - IoT
-- Open-Source
-- Content
+- Open Source
 tags_raw:
 - Company
 - Neuromorphic Computing
@@ -46,352 +45,23 @@ tags_raw:
 - Sensors
 - Internet of Things
 - Open Source
-- Content
+- Machine-Learning
+- Open-Source
 apis:
-- aid: aictx:aictx-awards-api
-  name: aiCTX (now SynSense) Awards API
-  description: Awards and recognition.
-  humanURL: https://www.synsense.ai/
+- aid: aictx:synsense-ai-website-wordpress-rest
+  name: aiCTX (now SynSense) Website (WordPress REST)
+  description: 'The public WordPress REST API (wp-json) of the aiCTX (now SynSense) website at www.synsense.ai:
+    the route index of the site''s content management system, catalogued as one site surface rather than
+    as separate APIs.'
   baseURL: https://www.synsense.ai/wp-json
   tags:
-  - Awards
+  - WordPress
+  x-surface: platform-generated
   properties:
-  - type: OpenAPI
-    url: openapi/aictx-awards-api-openapi.yml
   - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-careers-api
-  name: aiCTX (now SynSense) Careers API
-  description: Open roles at SynSense.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - Careers
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-careers-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-company-api
-  name: aiCTX (now SynSense) Company API
-  description: Offices and their country/city taxonomies.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - Company
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-company-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-content-api
-  name: aiCTX (now SynSense) Content API
-  description: Site pages, media attachments and authors.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - Content
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-content-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-discovery-api
-  name: aiCTX (now SynSense) Discovery API
-  description: Self-describing index, content types, taxonomies, statuses and site search.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - Discovery
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-discovery-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-news-api
-  name: aiCTX (now SynSense) News API
-  description: SynSense news posts.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - News
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-news-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-partners-api
-  name: aiCTX (now SynSense) Partners API
-  description: SynSense partner organisations and their categories.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - Partners
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-partners-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-products-api
-  name: aiCTX (now SynSense) Products API
-  description: SynSense product entries and their categories.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - Product
-  tags_raw:
-  - Products
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-products-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
-- aid: aictx:aictx-taxonomy-api
-  name: aiCTX (now SynSense) Taxonomy API
-  description: Post categories and tags.
-  humanURL: https://www.synsense.ai/
-  baseURL: https://www.synsense.ai/wp-json
-  tags:
-  - Taxonomy
-  properties:
-  - type: OpenAPI
-    url: openapi/aictx-taxonomy-api-openapi.yml
-  - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
-  - type: Examples
-    url: examples/aictx-products-list.json
-  - type: Examples
-    url: examples/aictx-careers-list.json
-  - type: Examples
-    url: examples/aictx-our-partners.json
-  - type: Examples
-    url: examples/aictx-offices.json
-  - type: Examples
-    url: examples/aictx-awards.json
-  - type: Examples
-    url: examples/aictx-news-posts.json
-  - type: Examples
-    url: examples/aictx-content-types.json
-  - type: Authentication
-    url: authentication/aictx-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aictx-problem-types.yml
-  - type: Conventions
-    url: conventions/aictx-conventions.yml
-  - type: DataModel
-    url: data-model/aictx-data-model.yml
-  - type: RateLimits
-    url: rate-limits/aictx-rate-limits.yml
-  - type: X-MCPServerCandidate
-    url: mcp/aictx-mcp.yml
+    url: https://www.synsense.ai/wp-json
+  x-platform: wordpress
+  x-platform-surface: rest
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -446,8 +116,22 @@ common:
   url: security/aictx-domain-security.yml
 - type: X-WellKnownProbe
   url: well-known/aictx-well-known.yml
+- type: Authentication
+  url: authentication/aictx-authentication.yml
+- type: ErrorCatalog
+  url: errors/aictx-problem-types.yml
+- type: Conventions
+  url: conventions/aictx-conventions.yml
+- type: DataModel
+  url: data-model/aictx-data-model.yml
+- type: RateLimits
+  url: rate-limits/aictx-rate-limits.yml
+- type: X-MCPServerCandidate
+  url: mcp/aictx-mcp.yml
 x-enrichment:
   date: '2026-09-14'
   status: enriched
   artifacts_added: 28
   pass: local-v3
+x-tags-removed:
+- Content
