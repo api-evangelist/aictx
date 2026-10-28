@@ -64,33 +64,122 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-**aiCTX AG was renamed SynSense AG in May 2020.** This repository is filed under the original
-`aictx` slug; the company, its site and its software all trade as SynSense today.
+aiCTX AG — renamed SynSense AG in May 2020 — is a neuromorphic computing company founded in Zurich in 2017 out of the Institute of Neuroinformatics at the University of Zurich and ETH Zurich. It designs ultra-low-power mixed-signal neuromorphic processors and smart sensors for always-on, sub-milliwatt edge inference: the Speck and DYNAP-CNN event-driven vision SoCs, the Xylo family for audio and IMU signal processing, and the DVS, Rigi and AEVEON sensor series. Its developer surface is a stack of open-source Python libraries rather than a product web API — Samna (the device interface and runtime), Rockpool (spiking network training and deployment) and Sinabs (PyTorch spiking CNNs) — backed by a developer community, forum, and firmware and datasheet download hub at synsense.ai. The one HTTP API the company serves publicly is the anonymous, read-only WordPress REST content API behind that corporate site, which exposes its products, partners, offices, awards, open roles and news as machine-readable JSON.
 
-SynSense is a neuromorphic computing company founded in Zurich in 2017 out of the Institute of
-Neuroinformatics at the University of Zurich and ETH Zurich. It designs ultra-low-power
-mixed-signal neuromorphic processors and smart sensors for always-on, sub-milliwatt edge
-inference — Speck and DYNAP-CNN (event-driven vision), the Xylo family (audio and IMU), and the
-DVS, Rigi and AEVEON sensor series.
+**Areas:** Company · Neuromorphic Computing · Artificial Intelligence · Semiconductors · Edge Computing · Machine Learning · Sensors · IoT · Open Source
 
-## What this profile found
+## aiCTX (now SynSense) on APIs.io
 
-- **The silicon is not network-callable.** SynSense's developer surface is a stack of open-source
-  Python libraries that drive its chips locally over USB/FPGA development kits: `samna` (device
-  interface and runtime), `rockpool` (SNN training and deployment) and `sinabs` (PyTorch spiking
-  CNNs). All are published on PyPI and actively released; see `packages/`.
-- **One HTTP API is served publicly** — the WordPress REST content API at
-  `https://www.synsense.ai/wp-json`. It is anonymous, read-only and CORS-open, and its custom post
-  types carry real company data: products, partner organisations, offices, awards, open roles and
-  news. `openapi/aictx-website-content-api-openapi.json` is a 40-operation OpenAPI 3.1 document
-  **derived** by API Evangelist from surfaces the site itself serves — the route index at
-  `/wp-json/` and the JSON Schema each collection returns to an HTTP `OPTIONS` request. SynSense
-  publishes no OpenAPI of its own, and the derived document says so in its `info.description`,
-  `x-generated-from` and `x-generated-by`.
-- **Absences were probed, not assumed.** No MCP server, no A2A agent card, no `/.well-known/`
-  documents on any host, no `llms.txt`, no status page, no pricing page, no security.txt, no
-  OAuth/OIDC discovery, no trust centre or published certifications, and no rate-limit
-  signalling. Each is recorded with the URL probed and the status it returned.
+Everything profiled for aiCTX (now SynSense) is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/aictx/](https://apis.io/providers/aictx/)** — or go straight to one of the APIs or properties below.
 
-Website: https://www.synsense.ai/ · Developer community: https://www.synsense.ai/developercommunity/ ·
-GitHub: https://github.com/synsense
+### APIs (1)
+
+- [aiCTX (now SynSense) Website (WordPress REST)](https://apis.io/apis/aictx/synsense-ai-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the aiCTX (now SynSense) website at www.synsense.ai: the route index of the site's content management system,…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [aictx-mcp.yml](https://apis.io/servers/aictx/aictx-mcp-yml/)
+
+#### Examples (1)
+
+Example requests and responses.
+
+- [Moved to /providers/aictx/](https://apis.io/examples/aictx/aictx-content-types/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Aictx Website Content Api Overlay](https://apis.io/overlays/aictx/aictx-website-content-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Aictx Authentication](https://apis.io/security/aictx/aictx-authentication/)
+- [Aictx Domain Security](https://apis.io/security/aictx/aictx-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Aictx Plans Pricing](https://apis.io/plans/aictx/aictx-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Aictx Rate Limits](https://apis.io/rate-limits/aictx/aictx-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.synsense.ai/)
+- [Documentation](https://www.synsense.ai/developercommunity/documentation/)
+- [Getting started](https://www.synsense.ai/speck-quick-start-guide/)
+- [API reference](https://synsense-sys-int.gitlab.io/samna/)
+- [Support](https://www.synsense.ai/contact-2/)
+- [Blog](https://www.synsense.ai/news/)
+- [Terms of service](https://www.synsense.ai/terms-of-service/)
+- [Privacy policy](https://www.synsense.ai/privacy-policy/)
+- [GitHub](https://github.com/synsense)
+
+## API Evangelist rating
+
+**Kin Score 30.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 27.6 |
+
+**Agent readiness 8.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 22.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/aictx/](https://apis.io/providers/aictx/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for aiCTX (now SynSense): the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/aictx/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
